@@ -61,7 +61,8 @@ namespace Util
                 obj.returnFactory += ReturnEffect;
             }
 
-            obj.transform.SetParent(parent);
+            //== 24.07.18 Added verification code as SetParent is quite heavy
+            if (obj.transform.parent != parent) obj.transform.SetParent(parent);
             obj.transform.localPosition = Vector3.zero;
             if (resetScale) obj.transform.localScale = Vector3.one;
             else obj.transform.localScale = prefabs[id].transform.localScale;

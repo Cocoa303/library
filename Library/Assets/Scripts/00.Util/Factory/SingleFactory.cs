@@ -40,7 +40,8 @@ namespace Util
                 obj.returnFactory += ReturnEffect;
             }
 
-            obj.transform.SetParent(parent);
+            //== 24.07.18 Added verification code as SetParent is quite heavy
+            if (obj.transform.parent != parent) obj.transform.SetParent(parent);
             obj.transform.localPosition = Vector3.zero;
             obj.transform.localScale = Vector3.one * scale;
             if (rotationSet) obj.transform.localRotation = Quaternion.Euler(0, 0, 0);
