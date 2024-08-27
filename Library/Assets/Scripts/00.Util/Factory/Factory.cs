@@ -53,7 +53,7 @@ namespace Util
                 obj = selectPool.Dequeue();
                 obj.gameObject.SetActive(true);
             }
-            //= 새로 생성
+            //= new create
             else
             {
                 obj = GameObject.Instantiate(prefabs[id]);
