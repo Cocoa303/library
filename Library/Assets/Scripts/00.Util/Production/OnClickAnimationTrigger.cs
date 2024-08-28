@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Util
+namespace Util.Production
 {
     [RequireComponent(typeof(EventTrigger))]
     public class OnClickAnimationTrigger : MonoBehaviour
