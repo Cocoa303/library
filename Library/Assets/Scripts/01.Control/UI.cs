@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,8 +7,8 @@ namespace Control
 {
     public class UI
     {
-        public Dictionary<string, IRegisterUI> database = new Dictionary<string, IRegisterUI>();
-        public List<IRegisterUI> opened = new List<IRegisterUI>();
+        private Dictionary<string, IRegisterUI> database = new Dictionary<string, IRegisterUI>();
+        private List<IRegisterUI> opened = new List<IRegisterUI>();
 
         #region Register & UnRegister
         public bool Register(IRegisterUI ui)
@@ -131,6 +132,39 @@ namespace Control
             return true;
         }
         #endregion
+
+        #region Check
+        public bool IsOpend(IRegisterUI ui)
+        {
+            if (opened.Count == 0) { return false; }
+
+            int findIndex = opened.FindIndex((item)=> item == ui);
+            if (findIndex != -1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        #endregion
+
+        public List<IRegisterUI> Search(Predicate<IRegisterUI> predicate)
+        {
+            return opened.FindAll(predicate);
+        }
+
+        public void RemoveOpenRecords(IRegisterUI ui)
+        {
+            int findIndex = opened.FindLastIndex((item) => item == ui);
+
+            if (findIndex != -1)
+            {
+                opened.RemoveAt(findIndex);
+            }
+        }
 
         public (bool, IRegisterUI) GetUI(string id)
         {

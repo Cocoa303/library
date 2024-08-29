@@ -9,6 +9,7 @@ public interface IRegisterUI
 
     public void Register();
     public string GetID();
+    public int GetPriority();
 
     public bool IsSingle();
 }
