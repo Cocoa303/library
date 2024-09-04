@@ -9,7 +9,6 @@ using UnityEngine.UI;
 using Production = Util.Production.UI;
 #endif
 
-
 namespace Base
 {
     public class UI : UIBehaviour, IRegisterUI

@@ -171,7 +171,11 @@ namespace Manager
 
             //== When an exit animation is in progress, forcefully close and then reactivate the UI.
             //== This handles cases where rapidly closing and reopening the UI prevents it from opening correctly.
-            if (ui.Flag.Exist(Base.UI.InnerFlag.active) && ui.IsClosing)
+            if (ui.Flag.Exist(Base.UI.InnerFlag.active)
+#if HAS_DOTWEEN
+                && ui.IsClosing
+#endif
+                )
             {
                 ui.ForceClose((_) =>
                 {
