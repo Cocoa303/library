@@ -2,7 +2,7 @@ using System.IO;
 using UnityEngine;
 
 
-namespace Util
+namespace Util.Camera
 {
     public class ScreenShot : MonoBehaviour
     {
@@ -15,7 +15,7 @@ namespace Util
         /// <param name="texW"> texture width </param>
         /// <param name="texH"> texture height </param>
         /// <returns> screen shot texture </returns>
-        public Texture2D Shot(Camera camera, int texW, int texH)
+        public Texture2D Shot(UnityEngine.Camera camera, int texW, int texH)
         {
             Texture2D shot = new Texture2D(texW, texH, TextureFormat.RGB24, false);
             Rect shotRect = new Rect(0, 0, shot.width, shot.height);
@@ -35,7 +35,7 @@ namespace Util
         /// <param name="texW"> texture width </param>
         /// <param name="texH"> texture height </param>
         /// <returns> path </returns>
-        public string Save(Camera camera, int texW, int texH)
+        public string Save(UnityEngine.Camera camera, int texW, int texH)
         {
             string path = Application.dataPath + "/ScreenShot/";
 
