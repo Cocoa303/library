@@ -5,7 +5,10 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+#if HAS_DOTWEEN
 using Production = Util.Production.UI;
+#endif
+
 
 namespace Base
 {
@@ -54,7 +57,10 @@ namespace Base
 
         //== UI reference
         [SerializeField] protected Button closeButton;
+
+#if HAS_DOTWEEN
         [SerializeField] protected Production production;
+#endif
 
         public delegate void Callback(UI ui);
         private Callback openCallback;
@@ -69,6 +75,7 @@ namespace Base
         public InnerFlag Flag { get { return flag; } }
         public Button CloseButton { get { return closeButton; } }
 
+#if HAS_DOTWEEN
         public bool IsOpenning
         {
             get
@@ -80,6 +87,7 @@ namespace Base
                 }
             }
         }
+
         public bool IsClosing
         {
             get
@@ -91,6 +99,7 @@ namespace Base
                 }
             }
         }
+#endif
         #endregion End
 
 #if UNITY_EDITOR
@@ -116,6 +125,7 @@ namespace Base
                 closeButton.targetGraphic = targetGraphic;
             }
 
+#if HAS_DOTWEEN
             if (production == null)
             {
                 Production production = GetComponent<Production>();
@@ -126,6 +136,7 @@ namespace Base
 
                 this.production = production;
             }
+#endif
         }
 #endif
         //== NOTE: Declared for pre-processing initialization due to the nature of UI objects starting as inactive.
@@ -133,8 +144,9 @@ namespace Base
 
         public virtual void Init(float width, float height, int hash)
         {
+#if HAS_DOTWEEN
             production.Init(width, height);
-
+#endif
             this.hash = hash;
         }
 
@@ -156,7 +168,9 @@ namespace Base
 
         public void ForceClose(Callback closeCallback)
         {
+#if HAS_DOTWEEN
             production.ForceCloseOn();
+#endif
             forceCloseCallback = closeCallback;
 
             Close();
@@ -170,13 +184,16 @@ namespace Base
 
         IEnumerator OpenProgress()
         {
+#if HAS_DOTWEEN
             if (production.IsOpenRunning == true) yield break;
             production.CallOpenProcessing();
 
             //== Waiting for animation to start
             yield return new WaitUntil(() => production.IsOpenRunning == true);
             yield return new WaitUntil(() => production.IsOpenRunning == false);
-
+#else
+            yield return null;
+#endif
             openCallback?.Invoke(this);
             openCallback = null;
 
@@ -185,13 +202,16 @@ namespace Base
 
         IEnumerator CloseProgress(bool destroy)
         {
+#if HAS_DOTWEEN
             if (production.IsCloseRunning == true) yield break;
             production.CallCloseProduction();
 
             //== Waiting for animation to start
             yield return new WaitUntil(() => production.IsCloseRunning == true);
             yield return new WaitUntil(() => production.IsCloseRunning == false);
-
+#else
+            yield return null;
+#endif
             closeCallback?.Invoke(this);
             closeCallback = null;
 
@@ -200,6 +220,8 @@ namespace Base
             {
                 gameObject.SetActive(false);
             }
+
+#if HAS_DOTWEEN
             if (production.ForceCloseFlag)
             {
                 forceCloseCallback?.Invoke(this);
@@ -207,6 +229,7 @@ namespace Base
 
                 production.ForceCloseOff();
             }
+#endif
 
             closeProduction = null;
         }
@@ -216,9 +239,15 @@ namespace Base
             return $"[ ID\t: {id} ]\n" +
                     $"[ Hash\t\t: {hash} ]\n" +
                     $"[ Priority\t: {priority} ]" +
-                    $"[ Flag\t\t: {flag.GetExistString()} ]" +
+                    $"[ Flag\t\t: {flag.GetExistString()} ]"
+#if HAS_DOTWEEN
+                    +
                     $"[ IsOpenning\t: {IsOpenning} ]" +
                     $"[ IsClosing\t: {IsClosing} ]";
+#else
+                    + "Animation Not has tween";
+
+#endif
         }
 
         public string GetID()
@@ -235,8 +264,5 @@ namespace Base
         {
             return flag.Exist(InnerFlag.single);
         }
-
-        
     }
-
 }
