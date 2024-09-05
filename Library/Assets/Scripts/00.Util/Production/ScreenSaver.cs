@@ -4,6 +4,11 @@ using UnityEngine.Pool;
 
 namespace Util.Production
 {
+    //== [ Note ]
+    //== Screen Saver에 사용 되는 카메라의 경우, Screen Saver와 관련된 Layer를 제외한 나머지 Layer를 Render처리 하지 않아야
+    //== Batch와 Draw Call이 줄어드는 성능을 발휘할수 있습니다.
+    //== 해당 Class는 범용으로 제작되어있기 때문에 특정 레이어를 처리하는 기능이 포함되어있지 않습니다.
+
     public class ScreenSaver : MonoBehaviour
     {
         [SerializeField] List<UnityEngine.Camera> disables;
