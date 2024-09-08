@@ -8,7 +8,8 @@ public class DefineSymbols
     static DefineSymbols()
     {
         //== DOTWeen
-        Setting("HAS_DOTWEEN", "Assets/Plugins/Demigiant/DOTween", "DOTween is not installed. This function and class cannot be used.");
+        Setting("HAS_DOTWEEN", "Assets/Plugins/Demigiant/DOTween", 
+            "DOTween is not installed. This function and class cannot be used.");
     }
 
     private static void Setting(string symbol, string path, string noPackageMessage)
@@ -22,7 +23,7 @@ public class DefineSymbols
         {
             if (AssetDatabase.IsValidFolder(path))
             {
-                PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, defaultSymbols + ',' + symbol);
+                PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, $"{defaultSymbols},{symbol}");
                 log += $"Defualt : {symbol} symbol has been added.\n";
             }
         }
@@ -40,7 +41,7 @@ public class DefineSymbols
         {
             if (AssetDatabase.IsValidFolder(path))
             {
-                PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Android, androidSymbols + ',' + symbol);
+                PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Android, $"{androidSymbols},{symbol}");
                 log += $"Android : {symbol} symbol has been added.\n";
             }
         }
@@ -57,7 +58,7 @@ public class DefineSymbols
         {
             if (AssetDatabase.IsValidFolder(path))
             {
-                PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.iOS, iosSymbols + ',' + symbol);
+                PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.iOS, $"{iosSymbols},{symbol}");
                 log += $"IOS : {symbol} symbol has been added.\n";
             }
         }
