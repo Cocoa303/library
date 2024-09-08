@@ -75,15 +75,15 @@ namespace Manager
             public float defaultVolum;
             public bool isBgm;
             public bool isLoop;
-            public Production fade;
+            public Production product;
 
-            public Registration(string id, float defaultVolum, bool isBgm, bool isLoop, Production fade)
+            public Registration(string id, float defaultVolum, bool isBgm, bool isLoop, Production product)
             {
                 this.id = id;
                 this.defaultVolum = defaultVolum;
                 this.isBgm = isBgm;
                 this.isLoop = isLoop;
-                this.fade = fade;
+                this.product = product;
             }
         }
 
@@ -386,6 +386,29 @@ namespace Manager
             }
         }
 
+        public void StopAudio(string id, bool stopOnce = false)
+        {
+            Clip clip = GetClip(id);
+
+            if (clip != null)
+            {
+                if(clip.type == Type.BGM)
+                {
+                    bgm.player.Stop();
+                }
+                else
+                {
+                    foreach (var audio in sfx)
+                    {
+                        if (audio.clipID.CompareTo(id) == 0)
+                        {
+                            audio.player.Stop();
+                            if (stopOnce) break;
+                        }
+                    }
+                }
+            }
+        }
         public void PauseAllSound()
         {
             AudioListener.pause = true;
@@ -403,7 +426,7 @@ namespace Manager
         {
             Registration data = callStack.Dequeue();
 
-            PlaySound(data.id, data.defaultVolum, data.isLoop, data.fade);
+            PlaySound(data.id, data.defaultVolum, data.isLoop, data.product);
         }
         private Clip GetClip(string id)
         {
