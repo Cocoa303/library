@@ -140,7 +140,7 @@ namespace Manager
         public (string id, Base.UI ui) Open(string id, bool coverAble, Base.UI.Callback openCallback, Base.UI.Callback closeCallback)
         {
             var result = UIControl(id, coverAble, openCallback, closeCallback);
-            var ui = result.Item2;
+            var ui = result.ui;
 
             if (ui != null)
             {
@@ -159,7 +159,7 @@ namespace Manager
             }
         }
 
-        private (string id, Base.UI ui) UIControl(string id, bool coverAble = true, Base.UI.Callback openCallback = null, Base.UI.Callback closeCallback = null)
+        private (string message, Base.UI ui) UIControl(string id, bool coverAble = true, Base.UI.Callback openCallback = null, Base.UI.Callback closeCallback = null)
         {
             Base.UI ui = database.Find((item) => item.GetID().CompareTo(id) == 0);
             if (ui == null)
