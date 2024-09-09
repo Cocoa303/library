@@ -40,23 +40,24 @@ namespace UnityEditor
 
         private string GetTitle()
         {
+            string frontEmptySpace = " ";
             switch (titleProp.propertyType)
             {
                 case SerializedPropertyType.Generic:
                     break;
                 case SerializedPropertyType.Integer:
-                    return titleProp.intValue.ToString();
+                    return frontEmptySpace + titleProp.intValue.ToString();
                 case SerializedPropertyType.Boolean:
-                    return titleProp.boolValue.ToString();
+                    return frontEmptySpace + titleProp.boolValue.ToString();
                 case SerializedPropertyType.Float:
-                    return titleProp.floatValue.ToString();
+                    return frontEmptySpace + titleProp.floatValue.ToString();
                 case SerializedPropertyType.String:
-                    return titleProp.stringValue;
+                    return frontEmptySpace + titleProp.stringValue;
                 case SerializedPropertyType.Color:
-                    return titleProp.colorValue.ToString();
+                    return frontEmptySpace + titleProp.colorValue.ToString();
                 case SerializedPropertyType.ObjectReference:
                     if (titleProp.objectReferenceValue == null) return string.Empty;
-                    string nameValue = titleProp.objectReferenceValue.ToString();
+                    string nameValue = frontEmptySpace + titleProp.objectReferenceValue.ToString();
                     if (nameValue.Contains("("))
                     {
                         nameValue = nameValue.Remove(nameValue.LastIndexOf('('));
@@ -65,13 +66,13 @@ namespace UnityEditor
                 case SerializedPropertyType.LayerMask:
                     break;
                 case SerializedPropertyType.Enum:
-                    return titleProp.enumNames[titleProp.enumValueIndex];
+                    return frontEmptySpace + titleProp.enumNames[titleProp.enumValueIndex];
                 case SerializedPropertyType.Vector2:
-                    return titleProp.vector2Value.ToString();
+                    return frontEmptySpace + titleProp.vector2Value.ToString();
                 case SerializedPropertyType.Vector3:
-                    return titleProp.vector3Value.ToString();
+                    return frontEmptySpace + titleProp.vector3Value.ToString();
                 case SerializedPropertyType.Vector4:
-                    return titleProp.vector4Value.ToString();
+                    return frontEmptySpace + titleProp.vector4Value.ToString();
                 case SerializedPropertyType.Rect:
                     break;
                 case SerializedPropertyType.ArraySize:

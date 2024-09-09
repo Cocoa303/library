@@ -137,7 +137,7 @@ namespace Manager
             }
         }
 
-        public (string, Base.UI) Open(string id, bool coverAble, Base.UI.Callback openCallback, Base.UI.Callback closeCallback)
+        public (string id, Base.UI ui) Open(string id, bool coverAble, Base.UI.Callback openCallback, Base.UI.Callback closeCallback)
         {
             var result = UIControl(id, coverAble, openCallback, closeCallback);
             var ui = result.Item2;
@@ -159,7 +159,7 @@ namespace Manager
             }
         }
 
-        private (string, Base.UI) UIControl(string id, bool coverAble = true, Base.UI.Callback openCallback = null, Base.UI.Callback closeCallback = null)
+        private (string id, Base.UI ui) UIControl(string id, bool coverAble = true, Base.UI.Callback openCallback = null, Base.UI.Callback closeCallback = null)
         {
             Base.UI ui = database.Find((item) => item.GetID().CompareTo(id) == 0);
             if (ui == null)

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Util.Inspector
 {
     [System.Serializable]
@@ -10,6 +12,11 @@ namespace Util.Inspector
         {
             this.key = key;
             this.value = value;
+        }
+        public UniPair(UniPair<T1, T2> other)
+        {
+            this.key = other.key;
+            this.value = other.value;
         }
     }
 }

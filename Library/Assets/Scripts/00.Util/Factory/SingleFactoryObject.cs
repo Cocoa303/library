@@ -11,5 +11,4 @@ namespace Util.Inherited
 
         public abstract void Return();
     }
-
 }

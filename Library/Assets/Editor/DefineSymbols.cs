@@ -17,13 +17,14 @@ public class DefineSymbols
         string log = string.Empty;
         bool isAlreadyInstall = false;
         #region Select Build Target
-        var defaultSymbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
+        var targetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
+        var defaultSymbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(targetGroup);
 
         if (!defaultSymbols.Contains(symbol))
         {
             if (AssetDatabase.IsValidFolder(path))
             {
-                PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, $"{defaultSymbols},{symbol}");
+                PlayerSettings.SetScriptingDefineSymbolsForGroup(targetGroup, $"{defaultSymbols},{symbol}");
                 log += $"Defualt : {symbol} symbol has been added.\n";
             }
         }
@@ -31,7 +32,6 @@ public class DefineSymbols
         {
             isAlreadyInstall = true;
         }
-
         #endregion
 
         #region Android

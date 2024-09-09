@@ -23,10 +23,7 @@ namespace Util.Camera
             offset = new Vector3(0, height, -distance);
 
 #if UNITY_EDITOR
-            if (target == null)
-            {
-                Debug.LogError($"{gameObject.name}의 Component Util.Camera.Follow에 target이 설정되어있지 않습니다.");
-            }
+            if (target == null) { Debug.LogError($"{gameObject.name}의 Component Util.Camera.Follow에 target이 설정되어있지 않습니다."); }
 #endif
         }
 
@@ -41,7 +38,6 @@ namespace Util.Camera
             }
         }
 #endif
-
 
         private void FixedUpdate()
         {

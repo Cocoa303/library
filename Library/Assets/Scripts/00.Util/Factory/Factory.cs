@@ -41,7 +41,6 @@ namespace Util
 
             if (!this.pool.ContainsKey(id))
             {
-                //Debug.LogError($"{id} is not contains db");
                 return null;
             }
 

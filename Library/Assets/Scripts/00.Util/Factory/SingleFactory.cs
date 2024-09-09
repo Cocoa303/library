@@ -27,12 +27,14 @@ namespace Util
             if (pool == null) pool = new Queue<T>();
 
             T obj = null;
+
+            //== Load
             if (0 < pool.Count)
             {
                 obj = pool.Dequeue();
                 obj.gameObject.SetActive(true);
             }
-            //= 새로 생성
+            //= New Create
             else
             {
                 obj = GameObject.Instantiate<T>(prefabInfo);

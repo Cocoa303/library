@@ -7,7 +7,6 @@ using UnityEditor;
 
 //== 해당 코드는 아래 링크의 코드를 사용하기 쉽게 수정한 코드입니다.
 //== https://github.com/Deadcows/MyBox/blob/master/Extensions/MyCollections.cs#L120
-//== 
 
 /// <summary>
 /// Conditionally Show/Hide field in inspector, based on some other field value
@@ -30,21 +29,17 @@ public class ShowIfAttribute : PropertyAttribute
     }
 }
 
-
 #if UNITY_EDITOR
-
 [CustomPropertyDrawer(typeof(ShowIfAttribute))]
 public class ShowIfAttributeDrawer : PropertyDrawer
 {
     private bool toShow = true;
-
 
     /// <summary>
     /// Key is Associated with drawer type (the T in [CustomPropertyDrawer(typeof(T))])
     /// Value is PropertyDrawer Type
     /// </summary>
     private static Dictionary<Type, Type> allPropertyDrawersInDomain;
-
 
     private bool initialized;
     private PropertyDrawer customAttributeDrawer;
@@ -101,7 +96,6 @@ public class ShowIfAttributeDrawer : PropertyDrawer
             }
         }
     }
-
 
     private void Initialize(SerializedProperty property)
     {
@@ -280,7 +274,6 @@ public static class ConditionalFieldUtility
 
     #endregion
 
-
     #region Find Relative Property
 
     public static SerializedProperty FindRelativeProperty(SerializedProperty property, string propertyName)
@@ -378,6 +371,5 @@ public static class ConditionalFieldUtility
         }
     }
 }
-
 #endif
 
