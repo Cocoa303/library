@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -18,6 +18,9 @@ namespace Manager
 
         //== Work to prevent UI from remaining open during Play or Build when it is in the middle of processing
         [SerializeField] private List<UIBehaviour> toCloseList;
+
+        [Header("Has Data")]
+        [SerializeField] private HashSet<Base.UI> onCoverUIs;
 
         private void OnValidate()
         {
@@ -135,6 +138,8 @@ namespace Manager
             {
                 toCloseList[i].gameObject.SetActive(false);
             }
+
+            onCoverUIs = new HashSet<Base.UI>();
         }
 
         public (string id, Base.UI ui) Open(string id, bool coverAble, Base.UI.Callback openCallback, Base.UI.Callback closeCallback)
@@ -149,6 +154,7 @@ namespace Manager
                 if (coverAble)
                 {
                     backgroundCover.gameObject.SetActive(true);
+                    onCoverUIs.Add(ui);
                 }
                 control.Open(ui);
                 return result;
@@ -225,6 +231,26 @@ namespace Manager
             baseUI.SetEvent(openCallback, closeCallback);
 
             return ("Success", baseUI);
+        }
+    
+        public void Close(Base.UI ui)
+        {
+            if(!ui.IsClosing)
+            {
+                bool closeResult = control.Close(ui);
+
+                if (closeResult)
+                {
+                    if (onCoverUIs.Contains(ui))
+                    {
+                        onCoverUIs.Remove(ui);
+                    }
+                    if(onCoverUIs.Count == 0)
+                    {
+                        backgroundCover.gameObject.SetActive(false);
+                    }
+                }
+            }
         }
     }
 }
