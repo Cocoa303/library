@@ -11,6 +11,9 @@ namespace Util.Inspector
     {
 #if UNITY_EDITOR
         [SerializeField, ReadOnly] private List<UniPair<TKey, TValue>> show = new List<UniPair<TKey, TValue>>();
+
+        //== NOTE : 접근 속도 안정화를 위하여 추가
+        private Dictionary<TKey, int> showIndex = new Dictionary<TKey, int>();
 #endif
 
         public UniDictionary() : base() { }
@@ -27,25 +30,26 @@ namespace Util.Inspector
         {
 #if UNITY_EDITOR
             show = new List<UniPair<TKey, TValue>>(capacity);
+            showIndex = new Dictionary<TKey, int>(capacity);
 
-            foreach(var key in Keys)
+            foreach (var key in Keys)
             {
                 show.Add(new UniPair<TKey, TValue>(key, this[key]));
+                showIndex.Add(key, show.Count - 1);
             }
 #endif
         }
 
-        public new TValue this[TKey key] 
-        { 
+        public new TValue this[TKey key]
+        {
             get => base[key];
             set
             {
                 base[key] = value;
 #if UNITY_EDITOR
-                int findIndex = show.FindIndex((item) => item.key.CompareTo(key) == 0);
-                if (findIndex != -1)
+                if(showIndex.ContainsKey(key))
                 {
-                    show[findIndex].value = value;
+                    show[showIndex[key]].value = value;
                 }
 #endif
             }
@@ -57,15 +61,17 @@ namespace Util.Inspector
 
 #if UNITY_EDITOR
             show.Add(new UniPair<TKey, TValue>(key, value));
+            showIndex.Add(key, show.Count - 1);
 #endif
         }
         public new bool TryAdd(TKey key, TValue value)
         {
             bool result = base.TryAdd(key, value);
 #if UNITY_EDITOR
-            if(result)
+            if (result)
             {
                 show.Add(new UniPair<TKey, TValue>(key, value));
+                showIndex.Add(key, show.Count - 1);
             }
 #endif
             return result;
@@ -75,10 +81,9 @@ namespace Util.Inspector
             bool result = base.Remove(key);
 
 #if UNITY_EDITOR
-            int findIndex = show.FindIndex((item) => item.key.CompareTo(key) == 0);
-            if(findIndex != -1)
+            if(result)
             {
-                show.RemoveAt(findIndex);
+                ConstructorSynchronization(show.Capacity);
             }
 #endif
 
@@ -89,10 +94,9 @@ namespace Util.Inspector
             bool result = base.Remove(key, out value);
 
 #if UNITY_EDITOR
-            int findIndex = show.FindIndex((item) => item.key.CompareTo(key) == 0);
-            if (findIndex != -1)
+            if (result)
             {
-                show.RemoveAt(findIndex);
+                ConstructorSynchronization(show.Capacity);
             }
 #endif
 
