@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Control
 {
-    public class Goods
+    public class Value
     {
         public Dictionary<string, long> record;
         public delegate void OnChange(long value);
