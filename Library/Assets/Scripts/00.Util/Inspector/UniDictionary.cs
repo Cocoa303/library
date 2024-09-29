@@ -7,7 +7,7 @@ namespace Util.Inspector
     //          개발중에 Inspector내에서 데이터를 확인하는것이 주 목적이다.
     //==        Inspector내에 데이터를 수정한다 하여, 기존 Dictionary에 데이터가 변동되지는 않는다.
     [System.Serializable]
-    public class UniDictionary<TKey, TValue> : Dictionary<TKey, TValue> where TKey : System.IComparable<TKey>
+    public class UniDictionary<TKey, TValue> : Dictionary<TKey, TValue>
     {
 #if UNITY_EDITOR
         [SerializeField, ReadOnly] private List<UniPair<TKey, TValue>> show = new List<UniPair<TKey, TValue>>();
