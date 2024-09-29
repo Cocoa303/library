@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Manager
 {
-    public class Sound : Util.Inherited.DisposableSingleton<Sound>
+    public class Sound : Util.Inherited.Singleton<Sound>
     {
         public enum Type
         {
@@ -35,7 +35,6 @@ namespace Manager
                 this.volum = volum;
                 this.baseKey = baseKey;
             }
-
             public State Clone()
             {
                 return new State(mute, volum, baseKey);
@@ -117,6 +116,24 @@ namespace Manager
         private const string Volum = "VOLUM";
 
 #if UNITY_EDITOR
+        public List<string> EditorClipNames
+        {
+            get
+            {
+                List<string> names = new List<string>();
+
+                foreach (var clip in this.clips)
+                {
+                    names.Add(clip.key);
+                }
+
+                return names;
+            }
+        }
+#endif
+
+
+#if UNITY_EDITOR
         private void OnValidate()
         {
             if (bgm == null)
@@ -159,6 +176,7 @@ namespace Manager
 #endif
         private void Start()
         {
+            InitializeState();
             InitializeDatabase();
             LoadSetting();
             InitializeAudio();
@@ -272,7 +290,7 @@ namespace Manager
 
             SaveState(state);
 
-            void UpdateAudio(Audio audio,in State state,in bool mute,in float volum)
+            void UpdateAudio(Audio audio, in State state, in bool mute, in float volum)
             {
                 if (audio.onProductionUpdate)
                 {
@@ -355,7 +373,7 @@ namespace Manager
             audio.player.loop = loop;
             audio.player.clip = clip.audio;
             audio.player.mute = state.mute || states[Type.MASTER].mute;
-            audio.clipID = clip.id; 
+            audio.clipID = clip.id;
 
             if (product != Production.None)
             {
@@ -367,7 +385,7 @@ namespace Manager
                 {
                     audio.player.volume = 0;
                 }
-                else if(audio.production == Production.FadeOut)
+                else if (audio.production == Production.FadeOut)
                 {
                     audio.player.volume = volum;
                 }
@@ -392,7 +410,7 @@ namespace Manager
 
             if (clip != null)
             {
-                if(clip.type == Type.BGM)
+                if (clip.type == Type.BGM)
                 {
                     bgm.player.Stop();
                 }
