@@ -16,19 +16,21 @@ namespace UnityEditor
         private string dataAssetName = "CustomEnumMakerData.txt";
         private TextAsset dataAsset = null;
 
-        private Dictionary<string, (string member, string @enum)> database;
+        private Dictionary<string, List<(string field, string @enum)>> database;
 
         private readonly string splitUnit = "/";
         private readonly int unitCount = 3;
         #endregion
         #region OnGUI Progress Reference
         private MonoScript selectedScripts;
+        private List<string> hasKeyVariable = null;
         private Dictionary<string /* */, string/**/> inputDatas = new();
 
         //== Name list
         private enum InputDataCategory
         {
-            EnumName
+            EnumName,
+            SelectIndex
         }
         #endregion
 
@@ -44,7 +46,9 @@ namespace UnityEditor
             if (inputDatas == null || inputDatas.Count == 0) InitInputData();
 
             //== Script file search
-            PrintNotice();
+            EditorGUILayout.LabelField(" ▼ 해당 도구는 Hierachy를 기반으로 합니다.");
+            EditorGUILayout.LabelField(" ▼ Inspector Data를 긁어오는 구조이기 때문에, 기본 스크립트 입력시 데이터를 추출할수없습니다.");
+
             var script = (MonoScript)EditorGUILayout.ObjectField("Target Script : ", selectedScripts, typeof(MonoScript), false);
             if (script != selectedScripts)
             {
@@ -55,17 +59,47 @@ namespace UnityEditor
                 return;
             }
             //== Unipair Search
+            if (hasKeyVariable == null) hasKeyVariable = SearchHasKeyVariable(selectedScripts);
+            string selectIndexKey = InputDataCategory.SelectIndex.ToString();
+            if (inputDatas[selectIndexKey] == string.Empty)
+            {
+                inputDatas[selectIndexKey] = 0.ToString();
+            }
+            int selectedIndex = EditorGUILayout.Popup("Select Option", int.Parse(inputDatas[selectIndexKey]), hasKeyVariable.ToArray());
+            inputDatas[selectIndexKey] = selectedIndex.ToString();
 
-            //== Enum 이름 지정
+            //== File 이름 설정
+            string fieldName = hasKeyVariable[selectedIndex];
+            string enumFileName = CreateFileName(script.GetClass(), fieldName);
 
-            //== 내부 데이터 서치 ( 보유중인 데이터 )
+            //== Enum 이름 탐색
+            string enumName = SearchEnumName(enumFileName, fieldName);
+            string buttonText = "파일 생성";
+            if (!string.IsNullOrEmpty(enumName))
+            {
+                EditorGUI.BeginDisabledGroup(true);
+                inputDatas[InputDataCategory.EnumName.ToString()] = EditorGUILayout.TextField("열거형 이름을 지정해주세요. ", inputDatas[InputDataCategory.EnumName.ToString()]);
+                EditorGUI.EndDisabledGroup();
+
+                buttonText = "파일 갱신";
+            }
+            else
+            {
+                //== 이름 지정
+                inputDatas[InputDataCategory.EnumName.ToString()] = EditorGUILayout.TextField("열거형 이름을 지정해주세요. ", inputDatas[InputDataCategory.EnumName.ToString()]);
+
+                if (SearchSameName(inputDatas[InputDataCategory.EnumName.ToString()], enumFileName, fieldName))
+                {
+                    EditorGUILayout.LabelField("[!] 중복된 열거형 이름이 존재합니다. [!]");
+                }
+            }
+
+            if (GUILayout.Button(buttonText))
+            {
+                CreateFile();
+            }
         }
 
-        private void PrintNotice()
-        {
-            EditorGUILayout.LabelField(" ▼ 해당 도구는 Hierachy를 기반으로 합니다.");
-            EditorGUILayout.LabelField(" ▼ Inspector Data를 긁어오는 구조이기 때문에, 기본 스크립트 입력시 데이터를 추출할수없습니다.");
-        }
         private void InitInputData()
         {
             inputDatas = new Dictionary<string, string>();
@@ -120,7 +154,12 @@ namespace UnityEditor
                     continue;
                 }
 
-                database.Add(unit[0], (unit[1], unit[2]));
+                if (!database.ContainsKey(unit[0]))
+                {
+                    database.Add(unit[0], new List<(string member, string @enum)>());
+                }
+
+                database[unit[0]].Add(new(unit[1], unit[2]));
             }
         }
         private void ClearInputData()
@@ -129,6 +168,7 @@ namespace UnityEditor
             {
                 inputDatas[key] = string.Empty;
             }
+            InitInputData();
         }
         private List<string> SearchHasKeyVariable(MonoScript selected)
         {
@@ -161,6 +201,53 @@ namespace UnityEditor
             }
 
             return pairs;
+        }
+        private string SearchEnumName(string fileName, string fieldName)
+        {
+            if (!database.TryGetValue(fileName, out var nodes))
+            {
+                return string.Empty;
+            }
+
+            foreach (var node in nodes)
+            {
+                if(node.field == fieldName)
+                {
+                    return node.@enum;
+                }
+            }
+
+            return string.Empty;
+        }
+        private string CreateFileName(System.Type classType, string fieldName)
+        {
+            string[] names = classType.Name.Split('.');
+            string name = names[names.Length-1];
+
+            return $"{name}.{fieldName}.cs";
+        }
+        private bool SearchSameName(string enumName, string fileName, string fieldName)
+        {
+            string searchName = SearchEnumName(fileName, fieldName);
+
+            if (string.IsNullOrEmpty(searchName))
+            {
+                return false;
+            }
+
+            foreach(var data in database)
+            {
+                foreach(var node in data.Value)
+                {
+                    if (node.field == enumName) return true;
+                }
+            }
+
+            return false;
+        }
+        private void CreateFile()
+        {
+
         }
 
         private void Update()
