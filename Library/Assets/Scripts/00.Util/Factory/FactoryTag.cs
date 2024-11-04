@@ -1,12 +1,12 @@
 namespace Util
 {
-    public class FactoryTag : Inherited.FactoryObject<string>
+    public class FactoryTag : FactoryObject
     {
-        private void OnValidate()
+        protected override void OnValidate()
         {
-            if (key != null && this.key.CompareTo(string.Empty) == 0)
+            if (ID != null && this.ID.CompareTo(string.Empty) == 0)
             {
-                this.key = gameObject.name;
+                this.ID = gameObject.name;
             }
         }
     }
