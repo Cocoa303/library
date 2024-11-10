@@ -10,10 +10,10 @@ namespace Util
         public virtual void Initialize() { }
 
         public bool IsReturned;
-        public delegate bool OnReturnCallback(FactoryObject fObject);
-        public event OnReturnCallback OnReturn;
+        public delegate void OnReturnCallback(FactoryObject fObject);
+        public OnReturnCallback OnReturn;
 
-        public void Return()
+        public virtual void Return()
         {
             OnReturn?.Invoke(this);
         }

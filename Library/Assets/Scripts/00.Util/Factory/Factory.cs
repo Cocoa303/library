@@ -61,7 +61,7 @@ namespace Util
             }
         }
 
-        public T Create(string id, Transform parent = null, System.Action<T> OnCreateSuccess = null)
+        public virtual T Create(string id, Transform parent = null, System.Action<T> OnCreateSuccess = null)
         {
             if (pool == null) Init();
 
@@ -78,6 +78,7 @@ namespace Util
             {
                 fObject = selectPool.Dequeue();
                 fObject.gameObject.SetActive(true);
+                fObject.OnReturn += ReturnMethod;
             }
             //== new Create
             else
@@ -87,13 +88,14 @@ namespace Util
                 fObject.OnReturn += ReturnMethod;
             }
 
-            if (fObject.transform.parent != parent) fObject.transform.parent = parent;
+            if (fObject.transform.parent != parent) fObject.transform.SetParent(parent);
             fObject.transform.localPosition = Vector3.zero;
             fObject.transform.localScale = database[id].transform.localScale;
             fObject.transform.localRotation = Quaternion.identity;
             fObject.IsReturned = false;
 
             OnCreateSuccess?.Invoke(fObject);
+            fObject.Initialize();
 
             return fObject;
         }
@@ -131,22 +133,20 @@ namespace Util
             return true;
         }
 
-        private bool ReturnMethod(FactoryObject data)
+        private void ReturnMethod(FactoryObject data)
         {
             if (pool == null) Init();
 
             if (data.IsReturned)
             {
-                return false;
+                return;
             }
             else
             {
                 data.IsReturned = true;
                 data.gameObject.SetActive(false);
-                data.OnReturn -= ReturnMethod;
-                pool[data.ID].Equals(data);
-
-                return true;
+                data.OnReturn = null;
+                pool[data.ID].Enqueue((T)data);
             }
         }
     }
