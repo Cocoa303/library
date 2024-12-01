@@ -31,7 +31,7 @@ namespace Common
 
         private void OnClick()
         {
-            Manager.Sound.Instance.PlaySound(soundKey, volume, isLoop);
+            Cocoa.Manager.Sound.Instance.PlaySound(soundKey, volume, isLoop);
         }
     }
 

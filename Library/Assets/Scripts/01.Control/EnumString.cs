@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Control
+namespace Cocoa.Control
 {
     //== C# 7.3 base
     public static class EnumString<T> where T : struct, System.Enum

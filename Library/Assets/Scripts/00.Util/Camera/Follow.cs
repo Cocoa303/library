@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Util.Camera
+namespace Cocoa.Util
 {
     public class Follow : MonoBehaviour
     {

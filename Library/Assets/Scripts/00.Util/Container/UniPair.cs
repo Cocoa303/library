@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-
-namespace Util.Inspector
+namespace Cocoa.Util.Container
 {
     [System.Serializable]
     public class UniPair<T1,T2>

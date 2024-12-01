@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Util.Inherited
+namespace Cocoa.Util.Inherited
 {
     public class DisposableSingleton<T> : MonoBehaviour where T : MonoBehaviour
     {

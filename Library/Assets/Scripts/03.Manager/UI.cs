@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Manager
+namespace Cocoa.Manager
 {
     public class UI : Util.Inherited.DisposableSingleton<UI>
     {

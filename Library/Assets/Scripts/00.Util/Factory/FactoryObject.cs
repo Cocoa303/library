@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Util
+namespace Cocoa.Util
 {
     public class FactoryObject : MonoBehaviour
     {

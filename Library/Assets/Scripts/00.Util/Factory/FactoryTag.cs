@@ -1,4 +1,4 @@
-namespace Util
+namespace Cocoa.Util
 {
     public class FactoryTag : FactoryObject
     {

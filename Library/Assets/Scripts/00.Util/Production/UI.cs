@@ -9,7 +9,7 @@ using UnityEditor;
 #if HAS_DOTWEEN
 using DG.Tweening;
 
-namespace Util.Production
+namespace Cocoa.Util.Production
 {
     //== EventTrigger not supported.
     public class UI : MonoBehaviour

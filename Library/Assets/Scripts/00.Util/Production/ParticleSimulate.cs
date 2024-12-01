@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Util
+namespace Cocoa.Util
 {
     public class ParticleSimulate : MonoBehaviour
     {

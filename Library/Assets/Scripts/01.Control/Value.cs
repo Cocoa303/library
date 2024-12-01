@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Control
+namespace Cocoa.Control
 {
     public class Value
     {

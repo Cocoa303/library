@@ -1,8 +1,8 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Util.Inherited
+namespace Cocoa.Util.Inherited
 {
     public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {

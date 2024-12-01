@@ -6,10 +6,10 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 #if HAS_DOTWEEN
-using Production = Util.Production.UI;
+using Production = Cocoa.Util.Production.UI;
 #endif
 
-namespace Base
+namespace Cocoa.Base
 {
     public class UI : UIBehaviour, IRegisterUI
     {

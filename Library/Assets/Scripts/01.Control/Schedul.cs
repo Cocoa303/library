@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace Control
+namespace Cocoa.Control
 {
     public class Schedul : Util.Inherited.Singleton<Schedul>
     {

@@ -16,7 +16,7 @@ public class SoundButtonEditor : Editor
     public override void OnInspectorGUI()
     {
         //== Sound Manager를 탐색하여 가지고있는 데이터들을 출력하기
-        var names = Manager.Sound.Instance.EditorClipNames;
+        var names = Cocoa.Manager.Sound.Instance.EditorClipNames;
         var data = (Common.SoundButton)target;
 
         EditorGUILayout.LabelField("Select Sound Clip");

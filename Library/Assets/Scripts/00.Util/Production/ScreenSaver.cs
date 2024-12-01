@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
-namespace Util.Production
+namespace Cocoa.Util.Production
 {
     //== [ Note ]
     //== Screen Saver에 사용 되는 카메라의 경우, Screen Saver와 관련된 Layer를 제외한 나머지 Layer를 Render처리 하지 않아야
@@ -31,7 +31,7 @@ namespace Util.Production
         [SerializeField, ReadOnly] float currentWaitTime;
         [SerializeField, ReadOnly] float currentCheckTime;
 
-        [SerializeField, ReadOnly] List<Inspector.UniPair<bool, UnityEngine.Camera>> targets;
+        [SerializeField, ReadOnly] List<Container.UniPair<bool, UnityEngine.Camera>> targets;
 
         public delegate void OnEnableCallback();
         private OnEnableCallback onEnableCallback;
@@ -98,11 +98,11 @@ namespace Util.Production
             if (targets != null && targets.Count != 0) return;
             if (isEnable) return;
 
-            targets = ListPool<Inspector.UniPair<bool, UnityEngine.Camera>>.Get();
+            targets = ListPool<Container.UniPair<bool, UnityEngine.Camera>>.Get();
 
             foreach(var camera in disables)
             {
-                targets.Add(new Inspector.UniPair<bool, UnityEngine.Camera>(camera.enabled, camera));
+                targets.Add(new Container.UniPair<bool, UnityEngine.Camera>(camera.enabled, camera));
                 camera.enabled = false;
             }
 
@@ -131,7 +131,7 @@ namespace Util.Production
                 saver.enabled = false;
             }
 
-            ListPool<Inspector.UniPair<bool, UnityEngine.Camera>>.Release(targets);
+            ListPool<Container.UniPair<bool, Camera>>.Release(targets);
             targets = null;
 
             onComplateDisable?.Invoke();

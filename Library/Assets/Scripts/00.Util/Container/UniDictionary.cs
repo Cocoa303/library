@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Util.Inspector
+namespace Cocoa.Util.Container
 {
     //== NOTE : 빌드시에 기존 Dictionary와 성능차이가 크게 나지 않으며
     //          개발중에 Inspector내에서 데이터를 확인하는것이 주 목적이다.

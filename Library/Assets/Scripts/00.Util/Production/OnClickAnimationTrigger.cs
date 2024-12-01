@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Util.Production
+namespace Cocoa.Util.Production
 {
     [RequireComponent(typeof(EventTrigger))]
     public class OnClickAnimationTrigger : MonoBehaviour

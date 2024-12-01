@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
-namespace Util
+namespace Cocoa.Util
 {
     [System.Serializable]
     public class Factory<T> where T : FactoryObject
     {
         [SerializeField] List<T> innerDatas = new();
-        [SerializeField, ReadOnly] Inspector.UniDictionary<string, T> database;
+        [SerializeField, ReadOnly] Container.UniDictionary<string, T> database;
 
         //== Init 함수의 자동 호출을 위하여 초기화하지 않습니다.
         Dictionary<string, Queue<T>> pool;

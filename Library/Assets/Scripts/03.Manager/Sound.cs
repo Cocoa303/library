@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Manager
+namespace Cocoa.Manager
 {
     public class Sound : Util.Inherited.Singleton<Sound>
     {
@@ -87,7 +87,7 @@ namespace Manager
         }
 
         //== Inspector Only
-        [SerializeField] List<Util.Inspector.UniPair<string, Clip>> clips;
+        [SerializeField] List<Util.Container.UniPair<string, Clip>> clips;
 
         //== Converted to Dictionary to reduce search time
         Dictionary<string, Clip> database = new Dictionary<string, Clip>();
